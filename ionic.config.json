@@ -1,0 +1,7 @@
+{
+  "name": "woo-shop",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
