@@ -20,12 +20,44 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" style="position: relative;">
+  <ion-toolbar style="position: fixed; top: 58px;">
+    <ion-buttons slot="primary">
+      <ion-button color="dark" expand="block" fill="clear">
+        <ion-icon name="funnel-outline" slot="end"></ion-icon>
+        Sort
+      </ion-button>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+      <ion-button color="dark" expand="block" fill="clear">
+        <ion-icon name="filter-outline" slot="end"></ion-icon>
+        Filter
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-slides [options]="sliderOptions" class="ion-padding" pager style="margin-top: 4.2rem;">
+    <ion-slide *ngFor="let slide of sliderImages">
+      <img [src]="slide+'.jpg'" alt="images">
+    </ion-slide>
+  </ion-slides>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let prod of displayedList" class="item-entry" detail routerLink="/tabs/tab1/prod-detail/{{ prod.id }}">
+            <ion-thumbnail>
+              <ion-img [src]="prod.images[0].src" alt="{{ prod.name }}"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h3 class="item-name">{{ prod.name }}</h3>
+              <ion-text>
+                <p class="price">{{ prod.price | currency:"INR" }}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
