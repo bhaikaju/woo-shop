@@ -16,6 +16,7 @@ export class ProductService {
 
 
     getAllProducts(pageNumber: number = 1): Observable<ProductModel[]> {
+        console.log(pageNumber);
         return this.httpClient.get<ProductModel[]>(`${this.url}/products?page=${pageNumber}&per_page=10`);
     }
 

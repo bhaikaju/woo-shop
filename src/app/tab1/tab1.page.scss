@@ -40,3 +40,11 @@ ion-buttons[slot="primary"] {
   font-weight: 500;
   font-size: 16px;
 }
+
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1.4rem;
+}
+
