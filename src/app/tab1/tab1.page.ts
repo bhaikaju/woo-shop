@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../services/product.service";
 import {ProductModel} from "../models/product-model";
-import {LoadingController, ToastController} from "@ionic/angular";
+import {LoadingController, ModalController, ToastController} from "@ionic/angular";
+import {SortModalComponent} from "../Components/sort-modal/sort-modal.component";
 
 @Component({
     selector: 'app-tab1',
@@ -31,7 +32,8 @@ export class Tab1Page implements OnInit {
 
     constructor(private productService: ProductService,
                 private loadingController: LoadingController,
-                private toastController: ToastController) {
+                private toastController: ToastController,
+                private modalController: ModalController) {
     }
 
     async ngOnInit() {
@@ -99,5 +101,74 @@ export class Tab1Page implements OnInit {
             backdropDismiss: false,
             showBackdrop: true
         }).then(el => el.present());
+    }
+
+    openModal() {
+        this.modalController.create({
+            component: SortModalComponent,
+            animated: true,
+            cssClass: 'sortModal'
+        }).then(el => {
+            el.present().then();
+            return el.onDidDismiss().then(resultData => {
+                this.sort({role: resultData.role, data: resultData.data});
+            })
+        });
+    }
+
+
+    sort(resultData: { role: string, data: any }) {
+        const {role, data} = {...resultData};
+        if (role === 'cancel') {
+            return;
+        } else if (role === 'sort') {
+
+            // Check the type of sorting asked by the customer
+            if (data === 'title-asc') {
+                this.displayedList.sort((a, b) => {
+                    const x = a.name.toLowerCase();
+                    const y = b.name.toLowerCase();
+
+                    if (x < y) {
+                        return -1;
+                    }
+                    if (x > y) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            else if (data === 'title-desc') {
+                this.displayedList.sort((a, b) => {
+                    const x = a.name.toLowerCase();
+                    const y = b.name.toLowerCase();
+
+                    if (x > y) {
+                        return -1;
+                    }
+                    if (x < y) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            else if (data === 'price-asc') {
+                this.displayedList.sort((a, b) => {
+                    // @ts-ignore
+                    return a.price - b.price;   // Low To High
+                });
+            }
+
+            else if (data === 'price-desc') {
+                this.displayedList.sort((a, b) => {
+                    // @ts-ignore
+                    return b.price - a.price;   // High To Low
+                });
+            }
+        }
+
+
     }
 }
