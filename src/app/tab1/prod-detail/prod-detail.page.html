@@ -1,9 +1,54 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>prod-detail</ion-title>
+    <ion-buttons>
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+   <ion-slides class="ion-padding" pager>
+     <ion-slide *ngFor="let i of product?.images">
+       <ion-img [src]="i?.src" alt="{{ product?.name }}"></ion-img>
+     </ion-slide>
+   </ion-slides>
 
+  <ion-item-divider></ion-item-divider>
+
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <h2>{{ product?.name }}</h2>
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ion-chip *ngFor="let c of product?.categories" color="secondary">
+                {{ c?.name}}
+              </ion-chip>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label>
+              <p>{{ product?.description.substr(0, 50) }}</p>
+              <ion-text>
+                <p>{{ product?.price | currency:"INR" }}</p>
+              </ion-text>
+            </ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar style="padding: 0 10px;">
+    <ion-label>
+      <ion-button color="tertiary " expand="full" fill="solid">
+        Add To Cart
+      </ion-button>
+    </ion-label>
+  </ion-toolbar>
+</ion-footer>

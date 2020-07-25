@@ -45,7 +45,10 @@
         <ion-row>
             <ion-col>
                 <ion-list>
-                    <ion-item *ngFor="let prod of displayedList" class="item-entry" detail
+                    <ion-item *ngFor="let prod of displayedList"
+                              class="item-entry"
+                              (click)="loadingSpinner()"
+                              detail
                               routerLink="/tabs/tab1/prod-detail/{{ prod.id }}">
                         <ion-thumbnail style="width:80px;">
                             <ion-img [src]="prod.images[0].src" alt="{{ prod.name }}"></ion-img>
