@@ -7,11 +7,14 @@ import {ModalController} from "@ionic/angular";
     styleUrls: ['./sort-modal.component.scss'],
 })
 export class SortModalComponent implements OnInit {
+    radioValue: string;
+
 
     constructor(private modalController: ModalController) {
     }
 
     ngOnInit() {
+        this.radioValue = localStorage.getItem('radio') || 'title-desc';
     }
 
     closeModal() {
@@ -19,6 +22,8 @@ export class SortModalComponent implements OnInit {
     }
 
     radioChanged(ev: any) {
-        this.modalController.dismiss(ev.target.value, 'sort').then();
+        this.radioValue = ev.target.value;
+        localStorage.setItem('radio', this.radioValue);
+        this.modalController.dismiss(this.radioValue, 'sort').then();
     }
 }

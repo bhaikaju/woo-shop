@@ -12,7 +12,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-radio-group (ionChange)="radioChanged($event)">
+    <ion-radio-group (ionChange)="radioChanged($event)" [value]="radioValue">
       <ion-item>
         <ion-label>Name Ascending</ion-label>
         <ion-radio value="title-asc"></ion-radio>
