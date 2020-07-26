@@ -7,6 +7,7 @@ import {ExploreContainerComponentModule} from '../explore-container/explore-cont
 
 import {Tab1PageRoutingModule} from './tab1-routing.module';
 import {SortModalComponent} from "../Components/sort-modal/sort-modal.component";
+import {FilterMenuComponent} from "../Components/filter-menu/filter-menu.component";
 
 @NgModule({
     imports: [
@@ -17,7 +18,7 @@ import {SortModalComponent} from "../Components/sort-modal/sort-modal.component"
         Tab1PageRoutingModule
     ],
     declarations: [Tab1Page,
-        SortModalComponent
+        SortModalComponent, FilterMenuComponent
     ]
 })
 export class Tab1PageModule {

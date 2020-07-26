@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {CategoryModel} from "../../models/categoryModel";
+import {IonCheckbox, MenuController} from "@ionic/angular";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-filter-menu',
@@ -6,9 +9,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filter-menu.component.scss'],
 })
 export class FilterMenuComponent implements OnInit {
+  @Output('checkbox') checkbox: EventEmitter<any> = new EventEmitter<any>();
+  @Input('categories') categories: CategoryModel[] = [];
 
-  constructor() { }
+  collapsed: boolean;
 
-  ngOnInit() {}
+  @ViewChild('checkbox', {static: false}) ionCheckbox : IonCheckbox;
 
+
+  constructor(private menuController: MenuController,
+              private router: Router) { }
+
+  ngOnInit() {
+    this.collapsed = true;
+  }
+
+
+  onClick() {
+    this.collapsed = !this.collapsed;
+  }
+
+  checkboxSelected(ev: any) {
+    this.menuController.close('filter').then();
+
+    this.checkbox.emit({
+      name: ev.target.name,
+      selected: ev.target.checked
+    });
+  }
+
+  closeMenu() {
+    this.menuController.close('filter').then();
+  }
 }

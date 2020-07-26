@@ -1,3 +1,6 @@
+<app-filter-menu (checkbox)="categoryFilter($event)" [categories]="categories"></app-filter-menu>
+<ion-router-outlet id="filter"></ion-router-outlet>
+
 <ion-header [translucent]="true">
     <ion-toolbar color="dark">
         <ion-buttons slot="start">
@@ -28,7 +31,7 @@
                 <ion-icon name="funnel-outline" slot="end"></ion-icon>
                 Sort
             </ion-button>
-            <ion-button color="dark" expand="block" fill="clear">
+            <ion-button color="dark" expand="block" fill="clear" (click)="openFilter()">
                 <ion-icon name="filter-outline" slot="end"></ion-icon>
                 Filter
             </ion-button>
