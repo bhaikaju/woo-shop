@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductModel} from "../../models/product-model";
 import {ActivatedRoute} from "@angular/router";
+import {CartService} from "../../services/cart.service";
 
 @Component({
     selector: 'app-prod-detail',
@@ -11,7 +12,8 @@ export class ProdDetailPage implements OnInit {
     product: ProductModel;
     showData = false;
 
-    constructor(private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute,
+                private cartService: CartService) {
     }
 
     ngOnInit() {
@@ -21,4 +23,7 @@ export class ProdDetailPage implements OnInit {
         });
     }
 
+    addProduct(product: ProductModel) {
+        this.cartService.addToCart(product);
+    }
 }

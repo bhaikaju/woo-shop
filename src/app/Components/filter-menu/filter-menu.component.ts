@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {CategoryModel} from "../../models/categoryModel";
 import {IonCheckbox, MenuController} from "@ionic/angular";
 import {Router} from "@angular/router";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'app-filter-menu',
@@ -18,7 +19,8 @@ export class FilterMenuComponent implements OnInit {
 
 
   constructor(private menuController: MenuController,
-              private router: Router) { }
+              private router: Router,
+              private storage: Storage) { }
 
   ngOnInit() {
     this.collapsed = true;

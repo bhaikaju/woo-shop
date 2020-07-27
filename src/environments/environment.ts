@@ -2,9 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const url1 = "https://shop-woo.cloudns.cl/wp-json/wc/v3"
-const authUrl1 = "https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token"
-const tokenVerifyUrl1 = "https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token/validate"
+const url1 = 'https://shop-woo.cloudns.cl/wp-json/wc/v3';
+const url2 = 'https://shop.paperetc.in/wp-json/wc/v3';
+const authUrl1 = 'https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token';
+const authUrl2 = 'https://shop.paperetc.in/wp-json/jwt-auth/v1/token';
+const tokenVerifyUrl1 = 'https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token/validate';
+const tokenVerifyUrl2 = 'https://shop.paperetc.in/wp-json/jwt-auth/v1/token/validate';
 
 
 // noinspection DuplicatedCode
