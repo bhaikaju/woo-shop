@@ -36,14 +36,11 @@ export class CartService {
             if (data) {
                 this.cartDataArray = data;
                 this.cartData$.next(this.cartDataArray);
-                // TODO Calculate Total
+                this.calculateTotal();
             }
         });
     }
 
-    get cartData(): Observable<CartModel> {
-        return this.cartData$.asObservable();
-    }
 
     async addToCart(product: ProductModel) {
         const loader = await this.loadingController.create({
@@ -110,13 +107,13 @@ export class CartService {
                 // Limit the max purchasable quantity to 5 per product per order
                 if (this.cartDataArray.productData[index].in_cart >= 5) {
                     this.cartDataArray.productData[index].in_cart = 5;
-                    //TODO Calculate Total
+                    this.calculateTotal();
                     this.storage.set('cart', {...this.cartDataArray}).then();
                     await loader.dismiss().then();
                     await toast.present().then();
                 } else {
                     this.cartDataArray.productData[index].in_cart += 1;
-                    //TODO Calculate Total
+                    this.calculateTotal();
                     this.storage.set('cart', {...this.cartDataArray}).then();
                     await loader.dismiss().then();
                     await alert.present().then();
@@ -130,7 +127,7 @@ export class CartService {
                 this.cartDataArray.productData.push(product);
                 const newProductIndex = this.cartDataArray.productData.findIndex(p => p.id === product.id);
                 this.cartDataArray.productData[newProductIndex].in_cart = 1;
-                // TODO Calculate Total
+                this.calculateTotal();
                 await loader.dismiss().then();
                 await alert.present().then();
                 this.cartDataArray.count = this.cartDataArray.productData.length;
@@ -144,7 +141,7 @@ export class CartService {
         else {
             this.cartDataArray.productData.push({...product, in_cart: 1});
             this.cartDataArray.count = this.cartDataArray.productData.length;
-            // TODO Calculate Total
+            this.calculateTotal();
             this.storage.set('cart', {...this.cartDataArray}).then();
             await loader.dismiss().then();
             await alert.present().then();
@@ -153,5 +150,55 @@ export class CartService {
 
     }
 
+    removeFromCart(product: ProductModel) {
+        this.cartDataArray.productData = this.cartDataArray.productData.filter(p => p.id !== product.id);
+        this.cartDataArray.count = this.cartDataArray.productData.length;
+        this.calculateTotal();
+
+        this.cartData$.next(this.cartDataArray);
+        this.totalAmount$.next(this.totalAmount);
+        this.storage.set('cart', {...this.cartDataArray}).then();
+        return this.cartDataArray.productData;
+    }
+
+    private calculateTotal() {
+        this.totalAmount = 0;
+        if (this.cartDataArray.productData.length === 0) {
+            this.totalAmount = 0;
+            this.totalAmount$.next(this.totalAmount);
+            return;
+        }
+
+        this.cartDataArray.productData.forEach(p => {
+            this.totalAmount += parseInt(p.price, 10) * p.in_cart;
+        });
+
+        this.totalAmount$.next(this.totalAmount);
+    }
+
+    updateQuantity(indexOfProduct: number, newInCartValue: number) {
+        this.cartDataArray.productData[indexOfProduct].in_cart = newInCartValue;
+        this.calculateTotal();
+        this.storage.set('cart', {...this.cartDataArray}).then();
+        this.cartData$.next(this.cartDataArray);
+        this.totalAmount$.next(this.totalAmount);
+    }
+
+    private emptyCart() {
+        this.cartDataArray = {
+            count: 0,
+            productData: []
+        };
+        this.calculateTotal();
+        this.cartData$.next(this.cartDataArray);
+    }
+
+    get cartData(): Observable<CartModel> {
+        return this.cartData$.asObservable();
+    }
+
+    get cartTotal(): Observable<number> {
+        return this.totalAmount$.asObservable();
+    }
 
 }

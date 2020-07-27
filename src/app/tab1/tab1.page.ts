@@ -4,6 +4,8 @@ import {ProductModel} from "../models/product-model";
 import {LoadingController, MenuController, ModalController, ToastController} from "@ionic/angular";
 import {SortModalComponent} from "../Components/sort-modal/sort-modal.component";
 import {CategoryModel} from "../models/categoryModel";
+import {CartService} from "../services/cart.service";
+import {map} from "rxjs/operators";
 
 @Component({
     selector: 'app-tab1',
@@ -32,12 +34,15 @@ export class Tab1Page implements OnInit {
     filterCount = 0;
     filteredCategoryList: any[] = [];
     categories: CategoryModel[] = [];
+    count: number;
 
     constructor(private productService: ProductService,
                 private loadingController: LoadingController,
                 private menuController: MenuController,
                 private toastController: ToastController,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private cartService: CartService) {
+        this.loadMoreData(null).then();
     }
 
     async ngOnInit() {
@@ -57,6 +62,10 @@ export class Tab1Page implements OnInit {
         });
 
         this.categories = await this.productService.getAllCategories().toPromise();
+
+        this.cartService.cartData.pipe(
+            map(data => data.count)
+        ).subscribe(count => this.count = count);
 
     }
 
