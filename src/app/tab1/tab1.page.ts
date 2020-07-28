@@ -85,6 +85,7 @@ export class Tab1Page implements OnInit {
 
         if (ev == null) {
             this.currentPage = 1;
+            return;
         } else {
             this.currentPage++;
             this.productService.getAllProducts(this.currentPage).subscribe(async (prods: ProductModel[]) => {
@@ -152,9 +153,7 @@ export class Tab1Page implements OnInit {
                     }
                     return 0;
                 });
-            }
-
-            else if (data === 'title-desc') {
+            } else if (data === 'title-desc') {
                 this.displayedList.sort((a, b) => {
                     const x = a.name.toLowerCase();
                     const y = b.name.toLowerCase();
@@ -167,16 +166,12 @@ export class Tab1Page implements OnInit {
                     }
                     return 0;
                 });
-            }
-
-            else if (data === 'price-asc') {
+            } else if (data === 'price-asc') {
                 this.displayedList.sort((a, b) => {
                     // @ts-ignore
                     return a.price - b.price;   // Low To High
                 });
-            }
-
-            else if (data === 'price-desc') {
+            } else if (data === 'price-desc') {
                 this.displayedList.sort((a, b) => {
                     // @ts-ignore
                     return b.price - a.price;   // High To Low
@@ -192,61 +187,72 @@ export class Tab1Page implements OnInit {
         this.menuController.open('filter').then();
     }
 
-    categoryFilter(ev: {name: string, selected: boolean}) {
+    categoryFilter(ev: { name: string, selected: boolean }) {
 
         // If the user clicked the filter for the first time and nothing is selected
-         if(ev.selected && this.filterCount === 0) {
-             this.filteredCategoryList.push(ev.name);
-             this.filterCount++;
-             this.displayedList = this.displayedList.filter(p => p.categories.some(cat => cat.name === ev.name));
-         }
-           // If the category selected is not present in the list of items
-         else if (ev.selected && this.filterCount >=1) {
-             const newArray = [...this.listArrayOfProducts];
-             this.filterCount++;
+        if (ev.selected && this.filterCount === 0) {
+            this.filteredCategoryList.push(ev.name);
+            this.filterCount++;
+            this.displayedList = this.displayedList.filter(p => p.categories.some(cat => cat.name === ev.name));
+        }
+        // If the category selected is not present in the list of items
+        else if (ev.selected && this.filterCount >= 1) {
+            const newArray = [...this.listArrayOfProducts];
+            this.filterCount++;
 
-             if (!this.filteredCategoryList.includes(ev.name)) {
-                 this.filteredCategoryList.push(ev.name);
+            if (!this.filteredCategoryList.includes(ev.name)) {
+                this.filteredCategoryList.push(ev.name);
 
-                 const product: ProductModel[] = newArray.filter(p => p.categories.some(cat => cat.name === ev.name));
-                 let i;
+                const product: ProductModel[] = newArray.filter(p => p.categories.some(cat => cat.name === ev.name));
+                let i;
 
-                 product.forEach(p => {
-                     i = this.displayedList.findIndex(prod => prod.id === p.id);
+                product.forEach(p => {
+                    i = this.displayedList.findIndex(prod => prod.id === p.id);
 
-                     // If product is present in the array
-                     if (i !== -1) {
-                         return;
-                     } else  {
-                         this.displayedList = this.displayedList.concat(p);
-                     }
-                 });
-             } else {
-                 return;
-             }
-         } // END OF ELSE IF
+                    // If product is present in the array
+                    if (i !== -1) {
+                        return;
+                    } else {
+                        this.displayedList = this.displayedList.concat(p);
+                    }
+                });
+            } else {
+                return;
+            }
+        } // END OF ELSE IF
 
         else if (!ev.selected && this.filterCount >= 1) {
-             const newArray = [...this.listArrayOfProducts];
-             this.filterCount--;
+            const newArray = [...this.listArrayOfProducts];
+            this.filterCount--;
 
-             // Remove the category from the filter list array
-             this.filteredCategoryList = this.filteredCategoryList.filter(el => el !== ev.name);
+            // Remove the category from the filter list array
+            this.filteredCategoryList = this.filteredCategoryList.filter(el => el !== ev.name);
 
-             if (this.filteredCategoryList.length > 0) {
-                 this.displayedList = [];
-                 this.filteredCategoryList.forEach(el => {
-                     this.displayedList = this.displayedList.concat(
-                         newArray.filter(p => p.categories.some(cat => cat.name === el))
-                     );
-                 })
-             }
+            if (this.filteredCategoryList.length > 0) {
+                this.displayedList = [];
+                this.filteredCategoryList.forEach(el => {
+                    this.displayedList = this.displayedList.concat(
+                        newArray.filter(p => p.categories.some(cat => cat.name === el))
+                    );
+                })
+            }
 
-             // Check if the filter count has reached 0, that means no filter is present now
-             if (this.filterCount === 0) {
-                 this.displayedList = [...this.listArrayOfProducts];
-             }
-         }
+            // Check if the filter count has reached 0, that means no filter is present now
+            if (this.filterCount === 0) {
+                this.displayedList = [...this.listArrayOfProducts];
+            }
+        }
 
+    }
+
+    segmentChange(ev: any) {
+        const value = ev.target.value;
+
+        if (value === 'featured') {
+            this.loadMoreData(null).then();
+            this.displayedList = this.listArrayOfProducts.filter(p => p.featured === true);
+        } else {
+            this.displayedList = [...this.listArrayOfProducts];
+        }
     }
 }

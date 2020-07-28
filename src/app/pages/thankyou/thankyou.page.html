@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Thank You</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="jumbotron text-center">
+          <h1 class="display-3">Thank You!</h1>
+          <p class="lead"><strong>Please check your email</strong> for order confirmation.</p>
+          <hr>
+          <p>
+          <p>Order Id : <strong>{{orderId}}</strong></p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="d-flex justify-content-center">
+        <ion-button routerLink="/" color="primary" fill="solid" expand="full" size="large">Go To Home</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

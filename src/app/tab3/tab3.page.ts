@@ -20,4 +20,5 @@ export class Tab3Page implements OnInit{
 
     this.cartService.cartTotal.subscribe(total => this.total = total);
   }
+
 }

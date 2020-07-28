@@ -2,11 +2,13 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {CartModel} from "../models/cartModel";
 import {BehaviorSubject, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AlertController, LoadingController, ToastController} from "@ionic/angular";
 import {Storage} from "@ionic/storage";
-import {Router} from "@angular/router";
+import {NavigationExtras, Router} from "@angular/router";
 import {ProductModel} from "../models/product-model";
+import {OrderModel} from "../models/orderModel";
+import {WriteObject} from "./backend.interceptor";
 
 @Injectable({
     providedIn: 'root'
@@ -200,5 +202,44 @@ export class CartService {
     get cartTotal(): Observable<number> {
         return this.totalAmount$.asObservable();
     }
+
+    getAllPaymentGateways() {
+        return this.httpClient.get(`${this.serverUrl}/payment_gateways`);
+    }
+
+    getTaxes() {
+        return this.httpClient.get(`${this.serverUrl}/taxes`);
+    }
+
+    async createOrder(orderData: OrderModel){
+        let headers = new HttpHeaders().set(WriteObject, '');
+        headers = headers.set('Content-Type', 'application/json');
+        const loader = await this.loadingController.create({
+           message: 'Placing order...',
+           animated: true,
+           spinner: "circular"
+        });
+
+        await loader.present().then();
+
+        this.httpClient.post(`${this.serverUrl}/orders`, {...orderData}, {headers})
+            .subscribe(async (newOrderDetails: any) => {
+                await loader.dismiss().then();
+
+
+                const navigationExtras: NavigationExtras = {
+                    state : {
+                        message: 'Order Placed',
+                        products: this.cartDataArray.productData,
+                        orderId: newOrderDetails.id,
+                        total: parseFloat(newOrderDetails.total)
+                    }
+                }
+                this.emptyCart();
+                this.router.navigate(['/thankyou'], navigationExtras).then();
+            });
+    }
+
+
 
 }

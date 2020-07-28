@@ -22,10 +22,19 @@
         </ion-buttons>
         <ion-badge color="light" slot="end">{{ count || 0 }}</ion-badge>
     </ion-toolbar>
+
+    <ion-toolbar color="dark">
+        <ion-segment (ionChange)="segmentChange($event)" value="all">
+            <ion-segment-button value="all">
+                <ion-label>All</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="featured"><ion-label>Featured</ion-label></ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" style="position: relative;">
-    <ion-toolbar style="position: fixed; top: 58px;">
+    <ion-toolbar style="position: fixed; top: 114px;">
         <ion-buttons slot="primary">
             <ion-button color="dark" expand="block" fill="clear" (click)="openModal()">
                 <ion-icon name="funnel-outline" slot="end"></ion-icon>
