@@ -101,8 +101,11 @@ export class CheckoutPage implements OnInit {
         this.sameShipping = !this.sameShipping;
     }
 
-    checkout(checkoutForm: NgForm) {
+    async checkout(checkoutForm: NgForm) {
         const data = checkoutForm.value;
+        const user: CustomerModel = await this.storage.get('user');
+
+
         const lineItems: LineItemsModel[] = [];
         this.products.forEach(p => {
             lineItems.push({
@@ -118,7 +121,7 @@ export class CheckoutPage implements OnInit {
                 payment_method: this.paymentGateway[0].id,
                 payment_method_title: this.paymentGateway[0].method_title,
                 // customer_id: this.userDetails[0].id,
-                customer_id:0,
+                customer_id: user[0].id > 0 ? user[0].id : 0,
                 billing: {
                     address_1: data.b_address_line_1,
                     address_2: data.b_address_line_2,
@@ -148,7 +151,7 @@ export class CheckoutPage implements OnInit {
                 set_paid: true,
                 payment_method: this.paymentGateway[0].id,
                 payment_method_title: this.paymentGateway[0].method_title,
-                customer_id: 0,
+                customer_id: user[0].id > 0 ? user[0].id : 0,
                 billing: {
                     address_1: data.b_address_line_1,
                     address_2: data.b_address_line_2,

@@ -18,7 +18,15 @@ export class ProductService {
 
     getAllProducts(pageNumber: number = 1): Observable<ProductModel[]> {
         console.log(pageNumber);
-        return this.httpClient.get<ProductModel[]>(`${this.url}/products?page=${pageNumber}&per_page=10`);
+
+        return this.httpClient.get<ProductModel[]>(`${this.url}/products`, {
+            params: {
+                stock_status: "instock",
+                // @ts-ignore
+                page: pageNumber,
+                per_page: "10"
+            }
+        });
     }
 
     getSingleProduct(id: number): Observable<ProductModel> {
