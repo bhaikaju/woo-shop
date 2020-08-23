@@ -1,17 +1,90 @@
+<app-filter-menu (checkbox)="categoryFilter($event)" [categories]="categories"></app-filter-menu>
+<ion-router-outlet id="filter"></ion-router-outlet>
+
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="dark">
+        <ion-buttons slot="start">
+            <!--<ion-button>
+                <ion-icon name="menu" slot="icon-only"></ion-icon>
+            </ion-button>-->
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            WOO SHOP
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button routerLink="/search">
+                <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button class="cart" routerLink="/tabs/tab3">
+                <ion-icon name="cart-outline" size="large" color="light"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-badge color="light" slot="end">{{ count || 0 }}</ion-badge>
+    </ion-toolbar>
+
+    <ion-toolbar color="dark">
+        <ion-segment (ionChange)="segmentChange($event)" value="all">
+            <ion-segment-button value="all">
+                <ion-label>All</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="featured"><ion-label>Featured</ion-label></ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+<ion-content [fullscreen]="true" style="position: relative;">
+    <ion-toolbar style="position: fixed; top: 114px;">
+        <ion-buttons slot="primary">
+            <ion-button color="dark" expand="block" fill="clear" (click)="openModal()">
+                <ion-icon name="funnel-outline" slot="end"></ion-icon>
+                Sort
+            </ion-button>
+            <ion-button color="dark" expand="block" fill="clear" (click)="openFilter()">
+                <ion-icon name="filter-outline" slot="end"></ion-icon>
+                Filter
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-slides [options]="sliderOptions" class="ion-padding" pager style="margin-top: 4.2rem;">
+        <ion-slide *ngFor="let slide of sliderImages">
+            <img [src]="slide+'.jpg'" alt="images">
+        </ion-slide>
+    </ion-slides>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item *ngFor="let prod of displayedList"
+                              class="item-entry"
+                              (click)="loadingSpinner()"
+                              detail
+                              routerLink="/tabs/tab1/prod-detail/{{ prod.id }}">
+                        <ion-thumbnail style="width:80px;">
+                            <ion-img [src]="prod.images[0].src" alt="{{ prod.name }}"></ion-img>
+                        </ion-thumbnail>
+                        <ion-label class="product">
+                            <h3 class="item-name">{{ prod.name }}</h3>
+                            <ion-text>
+                                <p class="price">
+                                    {{  prod.price | currency:"INR" }}
+                                </p>
+                            </ion-text>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+   <ion-infinite-scroll (ionInfinite)="loadMoreData($event)" threshold="10px">
+       <ion-infinite-scroll-content
+         loadingSpinner="bubbles"
+         loadingText="Loading more products...."
+       >
+       </ion-infinite-scroll-content>
+   </ion-infinite-scroll>
+
 </ion-content>
