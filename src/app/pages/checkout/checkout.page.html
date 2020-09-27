@@ -1,0 +1,270 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/tabs/tab3">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-left">Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <form #checkoutForm="ngForm">
+    <ion-grid>
+      <!-- Personal Details-->
+      <ion-row>
+        <ion-col>
+          <ion-list lines="full">
+            <ion-list-header color="dark" lines="full" slot="start">
+              <ion-label (click)="toggleUp('personal')"
+                         class="d-flex justify-content-between align-items-center"
+                         data-target="#personalDetails" data-toggle="collapse">
+                <h2 class="ion-color-tertiary" style="color: #e5e5e5;">Customer Details </h2>
+                <ion-icon (click)="toggleUp('personal')" *ngIf="!isPersonalUp"
+                          class="justify-self-start"
+                          data-target="#personalDetails" data-toggle="collapse"
+                          name="chevron-down-outline"
+                          size="medium" slot="icon-only" style="color: #e5e5e5;"></ion-icon>
+                <ion-icon (click)="toggleUp('personal')" *ngIf="isPersonalUp" class="justify-self-start"
+                          data-target="#personalDetails" data-toggle="collapse"
+                          name="chevron-up-outline"
+                          size="medium" slot="icon-only" style="color: #e5e5e5;"></ion-icon>
+              </ion-label>
+            </ion-list-header>
+            <div class="collapse" id="personalDetails">
+              <ion-item>
+                <ion-label position="floating">First Name</ion-label>
+                <ion-input #fname="ngModel" name="first_name" ngModel required type="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Last Name</ion-label>
+                <ion-input #lname="ngModel" name="last_name" ngModel required type="text"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input #email="ngModel" name="email" ngModel required type="email"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Phone</ion-label>
+                <ion-input #phone="ngModel" name="phone" ngModel required type="text"></ion-input>
+              </ion-item>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <!-- Billing Details-->
+      <ion-row>
+        <ion-col>
+          <ion-list lines="full">
+            <ion-list-header color="secondary" lines="full" slot="start">
+              <ion-label (click)="toggleUp('billing')"
+                         class="d-flex justify-content-between align-items-center"
+                         data-target="#billingDetails" data-toggle="collapse">
+                <h2 class="ion-color-tertiary" style="color: #3f1ce0;">Billing Address </h2>
+                <ion-icon (click)="toggleUp('billing')" *ngIf="!isBillingUp" class="justify-self-start"
+                          data-target="#billingDetails" data-toggle="collapse"
+                          name="chevron-down-outline"
+                          size="medium" slot="icon-only" style="color: #3f1ce0;"></ion-icon>
+                <ion-icon (click)="toggleUp('billing')" *ngIf="isBillingUp" class="justify-self-start"
+                          data-target="#billingDetails" data-toggle="collapse"
+                          name="chevron-up-outline"
+                          size="medium" slot="icon-only" style="color: #3f1ce0;"></ion-icon>
+              </ion-label>
+            </ion-list-header>
+
+
+            <ion-item class="collapse" id="billingDetails">
+              <ion-label position="stacked">Address Line 1</ion-label>
+              <ion-input #b_address_line_1="ngModel" name="b_address_line_1" ngModel required
+                         type="text"></ion-input>
+              <ion-label position="stacked">Address Line 2</ion-label>
+              <ion-input #b_address_line_2="ngModel" name="b_address_line_2" ngModel
+                         type="text"></ion-input>
+              <ion-label position="stacked">City</ion-label>
+              <ion-input #b_city="ngModel" name="b_city" ngModel required
+                         type="text"></ion-input>
+              <ion-label position="stacked">State</ion-label>
+              <ion-select #b_state="ngModel" name="b_state" ngModel placeholder="Select State Here"  required>
+                <ion-select-option *ngFor="let s of IndianStates; index as i"
+                                   [value]="s.value">{{ s.name }}</ion-select-option>
+              </ion-select>
+              <ion-label position="stacked">Postal Code</ion-label>
+              <ion-input #b_postcode="ngModel" name="b_postcode" ngModel required
+                         type="text"></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <!-- Checkbox-->
+      <ion-row>
+        <ion-col>
+          <ion-item style="border: 1px solid lightgray;">
+            <ion-checkbox (ionChange)="toggleShipping()" [checked]="sameShipping" color="secondary"
+                          slot="start"></ion-checkbox>
+            <ion-label>Shipping same as Billing Address</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Shipping Details-->
+      <ion-row *ngIf="!sameShipping">
+        <ion-col>
+          <ion-list lines="full">
+            <ion-list-header color="medium" lines="full" slot="start">
+              <ion-label (click)="toggleUp('shipping')"
+                         class="d-flex justify-content-between align-items-center"
+                         data-target="#shippingDetails" data-toggle="collapse">
+                <h2 class="ion-color-tertiary" style="color: #350303;">Shipping Address </h2>
+                <ion-icon (click)="toggleUp('shipping')" *ngIf="!isShippingUp"
+                          class="justify-self-start"
+                          data-target="#shippingDetails" data-toggle="collapse"
+                          name="chevron-down-outline"
+                          size="medium" slot="icon-only" style="color: #3f1ce0;"></ion-icon>
+                <ion-icon (click)="toggleUp('shipping')" *ngIf="isShippingUp" class="justify-self-start"
+                          data-target="#shippingDetails"
+                          data-toggle="collapse" name="chevron-up-outline"
+                          size="medium" slot="icon-only" style="color: #3f1ce0;"></ion-icon>
+              </ion-label>
+            </ion-list-header>
+
+
+            <ion-item class="collapse" id="shippingDetails">
+              <ion-label position="stacked">Address Line 1</ion-label>
+              <ion-input #s_address_line_1="ngModel" name="s_address_line_1" ngModel required
+                         type="text"></ion-input>
+              <ion-label position="stacked">Address Line 2</ion-label>
+              <ion-input #s_address_line_2="ngModel" name="s_address_line_2" ngModel
+                         type="text"></ion-input>
+              <ion-label position="stacked">City</ion-label>
+              <ion-input #s_city="ngModel" name="s_city" ngModel required
+                         type="text"></ion-input>
+
+              <ion-select #s_state="ngModel" name="s_state" ngModel placeholder="Select State Here" required>
+                <ion-select-option *ngFor="let s of IndianStates; index as i"
+                                   [value]="s.value">{{ s.name }}</ion-select-option>
+              </ion-select>
+              <ion-label position="stacked">Postal Code</ion-label>
+              <ion-input #s_postcode="ngModel" name="s_postcode" ngModel required
+                         type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </form>
+
+  <ion-grid>
+    <!-- Payment Details-->
+    <ion-row>
+      <ion-col>
+        <ion-list *ngIf="paymentGateway.length > 0" lines="full">
+          <ion-list-header color="tertiary" lines="full" slot="start">
+            <ion-label (click)="toggleUp('payment')"
+                       class="d-flex justify-content-between align-items-center"
+                       data-target="#paymentDetails" data-toggle="collapse">
+              <h2 class="ion-color-tertiary" style="color: #f0f1dd;">Payment Options </h2>
+              <ion-icon (click)="toggleUp('payment')" *ngIf="!isShippingUp" class="justify-self-start"
+                        data-target="#shippingDetails" data-toggle="collapse"
+                        name="chevron-down-outline"
+                        size="medium" slot="icon-only" style="color: #f0f1dd;"></ion-icon>
+              <ion-icon (click)="toggleUp('payment')" *ngIf="isShippingUp" class="justify-self-start"
+                        data-target="#shippingDetails"
+                        data-toggle="collapse" name="chevron-up-outline"
+                        size="medium" slot="icon-only" style="color: #f0f1dd;"></ion-icon>
+            </ion-label>
+          </ion-list-header>
+        </ion-list>
+        <ion-item class="collapse" id="paymentDetails">
+          <ion-checkbox checked
+                        color="primary"
+                        readonly
+                        slot="start"></ion-checkbox>
+          <ion-label>
+            {{ paymentGateway[0]?.title | uppercase}}
+            <p>{{ paymentGateway[0]?.description}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col *ngIf="paymentGateway <= 0" class="d-flex justify-content-center">
+        <ion-spinner color="primary" name="dots" size="large"></ion-spinner>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- ORDER SUMMARY -->
+    <ion-row>
+      <ion-col>
+        <ion-card class="ion-no-padding ion-no-margin">
+          <ion-card-header color="medium">
+            <ion-card-title>Order Summary</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              <ion-item>
+                <ion-label slot="start" routerLink="/tabs/tab3">
+                  Items SubTotal ({{(cartService.cartData | async).count }})
+                </ion-label>
+                <ion-label slot="end">
+                  <ion-spinner name="bubbles" *ngIf="!subTotal"></ion-spinner>
+                  <ion-text *ngIf="subTotal">{{ subTotal }}</ion-text>
+                </ion-label>
+              </ion-item>
+
+              <ion-item>
+                <ion-label slot="start">
+                  Shipping
+                </ion-label>
+                <ion-label slot="end">
+                  <ion-text>FREE</ion-text>
+                </ion-label>
+              </ion-item>
+
+              <ion-item>
+                <ion-label slot="start">
+                  Taxes
+                </ion-label>
+                <ion-label slot="end">
+                  <ion-spinner name="bubbles" *ngIf="!finalTax"></ion-spinner>
+                  <ion-text *ngIf="finalTax">{{ finalTax|currency:'INR'}}</ion-text>
+                </ion-label>
+              </ion-item>
+
+              <ion-item>
+                <ion-label slot="start">
+                  Total
+                </ion-label>
+                <ion-label slot="end">
+                  <ion-text>{{ cartTotal}}</ion-text>
+                </ion-label>
+              </ion-item>
+
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <!--SUBMIT BUTTON-->
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="checkout(checkoutForm)"
+                  [disabled]="checkoutForm.invalid || checkoutForm.pending"
+                  color="warning"
+                  expand="full"
+                  fill="solid"
+                  size="large"
+                  type="submit"
+      >Checkout
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>
