@@ -1,7 +1,6 @@
-const url1 = "https://shop-woo.cloudns.cl/wp-json/wc/v3"
-const authUrl1 = "https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token"
-const tokenVerifyUrl1 = "https://shop-woo.cloudns.cl/wp-json/jwt-auth/v1/token/validate"
-
+const url1 = "https://opencart-ir.com/wordpress/wp-json/wc/v3"
+const authUrl1 = "https://opencart-ir.com/wordpress/wp-json/jwt-auth/v1/token"
+const tokenVerifyUrl1 = "https://opencart-ir.com/wordpress/wp-json/jwt-auth/v1/token/validate"
 
 export const environment = {
     production: true,
@@ -9,8 +8,8 @@ export const environment = {
     auth_url: authUrl1,
     token_verify_url: tokenVerifyUrl1,
     readOnlyKeys: {
-        consumer_key: 'ck_85cdd6bc830c2c942542ac7aec1734b9b88b68f5',
-        consumer_secret: 'cs_13b724dc3d6caba718b847589d52131c17f0e41b'
+        consumer_key: 'ck_53e792aaa3b09b27611534d2a8a73b3df7f27cf1',
+        consumer_secret: 'cs_16e8e858a81ff4ab2af2c2b963a0c10257d33dfb'
     },
     writableKeys: {
         consumer_key: 'ck_7fb9d2318b11ac1927aca42bed732cc872bf02c2',
