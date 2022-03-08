@@ -1,0 +1,39 @@
+<ion-menu contentId="filter" menuId="filter" side="end">
+  <ion-header>
+    <ion-toolbar color="danger">
+      <ion-title>Filter Menu</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="closeMenu()">
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-list-header>
+        <ion-label class="d-flex ion-justify-content-between">
+          <h2>Categories</h2>
+        </ion-label>
+        <ion-buttons>
+          <ion-button data-toggle="collapse" data-target="#filterMenu" (click)="onClick()">
+            <ion-icon name="add-outline" slot="end" *ngIf="collapsed"></ion-icon>
+            <ion-icon name="remove-outline" slot="end" *ngIf="!collapsed"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <hr>
+      </ion-list-header>
+
+      <ion-item *ngFor="let c of categories" class="collapse" id="filterMenu">
+        <ion-checkbox color="secondary"
+                      name="{{c.name}}"
+                      slot="start"
+                      (ionChange)="checkboxSelected($event)"
+                      #checkbox>
+        </ion-checkbox>
+        <ion-text>{{ c.name }}</ion-text>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
